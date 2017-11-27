@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+
 
 
 typedef struct
@@ -23,6 +23,7 @@ typedef struct
     int nbArrets;
     arret *arrets;
 } ligne;
+
 
 
 int main()
