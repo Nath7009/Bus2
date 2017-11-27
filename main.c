@@ -30,3 +30,4 @@ int main()
     printf("%d",sizeof(ligne));
     return 0;
 }
+test
