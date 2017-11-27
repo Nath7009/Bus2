@@ -22,12 +22,17 @@ typedef struct
     arret *arrets;
 } ligne;
 
-sddfsdfsfdfdsfdsfdf
-
 
 int main()
 {
+    FILE *fichier;
+    char c;
+    fichier=fopen("Ligne1.csv","r+");
+    while(!feof(fichier)){
+        c=fgetc(fichier);
+        printf("%c",c);
+    }
     printf("%d",sizeof(ligne));
     return 0;
 }
-test
+
