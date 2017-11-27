@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
 
 typedef struct
 {
@@ -34,7 +36,5 @@ int main()
     }
     printf("%d",sizeof(ligne));
     return 0;
-
-saluts
 }
 
