@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-char MDP[]="admin";
+const char MDP[]="admin";
 
 typedef struct
 {
@@ -30,24 +30,12 @@ typedef struct
 int main()
 {
     FILE *fichier;
-    char motDePasse[20]="0";
-    int choix,choixMenu;
-    do
-    {
-        do
-        {
-            printf("Etes vous un simple utlisateur ou un administateur ? 1 pour utilisateur et 2 pour administrateur\n");
-            scanf("%d",&choix);
-        }
-        while(choix !=1 && choix !=2);
-        if(choix ==2)
-        {
-            printf("Entrer le  mot de passe \n");
-            scanf("%s",motDePasse);
-        }
-    }
-    while(strcmp(MDP,motDePasse)!=0 && choix==2);
-    if(choix==1)
+    char motDePasse[20];
+    int log=0; //1=utilisateur standard, 2=administrateur
+    int choixMenu;
+    log=login(MDP);
+
+    if(log==1)
     {
         printf("Vous pouvez acceder au programme en tant que simple utilisateur\n");
         do
@@ -75,18 +63,14 @@ int main()
                 case 4 :
 
                     break;
-
-
                 }
             }
         }
         while(choixMenu!=5);
-
     }
     else
     {
         printf("Vous pouvez acceder au programme en tant qu'admin\n");
-
     }
     return 0;
 }
