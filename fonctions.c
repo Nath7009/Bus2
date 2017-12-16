@@ -197,6 +197,7 @@ void lireLignes(ligne* lignes)
     }
 }
 
+
 void affLigne(ligne line)
 {
     int i,j;
@@ -208,4 +209,24 @@ void affLigne(ligne line)
             printf("%d h %d\n",line.arrets[i].heures[j].hr,line.arrets[i].heures[j].mn);
         }
     }
+}
+
+void ecrireArrFichier(arret arr, char *nomFichier)
+{
+    FILE *fichier;
+    int i;
+    fichier = fopen(nomFichier,"w");
+    if(fichier!=NULL)
+    {
+        fprintf(fichier,"%s",arr.nom); //On écrit le nom de l'arrêt
+        fprintf(fichier,"%c",'\n'); //On saute une ligne
+        for(i=0; i<arr.nbHr; i++) //On écrit toutes les heures
+        {
+            fprintf(fichier,"%d",arr.heures[i].hr);
+            fprintf(fichier,"%c",':');
+            fprintf(fichier,"%d",arr.heures[i].mn);
+            fprintf(fichier,"%c",'\n'); //On saute une ligne à chaque horaire
+        }
+    }
+    fclose(fichier);
 }

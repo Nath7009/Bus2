@@ -62,4 +62,21 @@
      *
      */
     void lireLignes(ligne* lignes);
+
+    /** \brief
+ *
+ * \param line ligne Ligne à afficher
+ * \return void Retourne ce qu'il y a à afficher dans la console
+ *
+ */
+    void affLigne(ligne line);
+
+    /** \brief
+     *
+     * \param arr arret Arret à écrire dans le fichier
+     * \param nomFichier char* Nom du fichier dans lequel écrire
+     * \return void
+     *
+     */
+    void ecrireArrFichier(arret arr, char *nomFichier);
     #endif // FONCTIONS_H_INCLUDED

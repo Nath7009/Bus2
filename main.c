@@ -9,9 +9,12 @@ int main()
 {
     FILE *fichier;
     char motDePasse[20],*nomArret,nomLigne[10];
-    int log=0,i,j;
+    int log=0,i,j,k,reussi=0,ecartMinutes, ecartMiniMinutes=10000;
     int numLigne;
     int choixMenu,choixLigne;
+    heure heureActu,ecart, ecartMin;
+    heureActu.hr=0;
+    heureActu.mn=0;
     ligne *lign;
     ligne lignes[NB_LIGNES];
     arret *arretTmp;
@@ -38,7 +41,81 @@ int main()
                 switch(choixMenu)
                 {
                 case 1 :
-                    printf("Quel a");
+                    printf("Entrer le nom de l'arret\n");
+                    gets(nomArret);
+                    printf("Entrer le numero de la ligne\n");
+                    scanf("%d",&numLigne);
+                    viderBuffer();
+
+                    i=0;
+                    while(i<NB_LIGNES && lignes[i].nbLigne!=numLigne) i++; //On cherche la ligne dans le tableau des lignes
+
+                    if(i<NB_LIGNES-1)  //Si il y a plusieurs lignes avec le meme numero, on propose à l'utilisateur de choisir la bonne direction
+                    {
+                        if(lignes[i+1].nbLigne==numLigne)
+                        {
+                            printf("Il y a plusieurs directions correspondant a la ligne que vous cherchez\n");
+                            do
+                            {
+                                printf("Veuillez entrer le numero de la ligne que vous cherchez\n");
+                                j=i;
+                                while(lignes[j].nbLigne==numLigne && j<NB_LIGNES)  //On parcourt les lignes
+                                {
+                                    printf("%d),%s\n",j-i,lignes[j].nomLigne); //On donne le nombre à entrer et on le fait partir de 0 avec j-i, puis 1,2,... tant qu'on a une ligne avec le bon numéro
+                                    j++;
+                                }
+                                scanf("%d",&choixLigne);
+                            }
+                            while(choixLigne<0 && choixLigne>j-i-1); //Sécurité, j-i-1 car on inrémente j à la fin de la boucle
+                            lign=&lignes[choixLigne+i];//On récupère l'adresse de la bonne ligne pour chercher un arret dedans
+                        }
+                    }
+                    else if(i<NB_LIGNES)
+                    {
+                        lign=&lignes[i];
+                    }
+                    else
+                    {
+                        printf("La ligne que vous cherchez n'est pas disponible\n");
+                    }
+
+                    arretTmp=getHorArret(nomArret,*lign); //On récupère l'arret si il existe
+                    if(arretTmp==0)
+                    {
+                        printf("L'arret n'a pas pu etre trouve\n");
+                    }
+                    else
+                    {
+                        printf("Arret trouve\n");
+                        do
+                        {
+                            printf("Entrer l'heure a laquelle vous voulez l'horaire le plus proche\n");
+                            scanf("%d",&heureActu.hr);
+                            printf("Entrer la minute a laquelle vous voulez l'horaire le plus proche\n");
+                            scanf("%d",&heureActu.mn);
+                        }
+                        while(heureActu.hr<0 || heureActu.mn<0 || heureActu.hr>24 || heureActu.mn>60);  //On vérifie que l'heure est bien confornme
+
+                        ecartMin.hr=24;
+                        ecartMin.mn=60;
+
+                        for(i=0; i<arretTmp->nbHr; i++) //Recherche de la meilleure heure
+                        {
+                            ecart.hr=heureActu.hr-arretTmp->heures[i].hr; //On calcule l'écart entre l'heure voulue et les horaires
+                            ecart.mn=heureActu.mn-arretTmp->heures[i].mn;
+                            ecartMinutes=ecart.hr*60+ecart.mn;
+                            if(ecartMinutes>=0)  //Si on a pas encore passé la bonne heure
+                            {
+                                if(ecartMinutes<ecartMiniMinutes)
+                                {
+                                    ecartMiniMinutes=ecartMinutes;
+                                }
+                            }
+                        }
+
+                        printf("Un bus passe a l'arret que vous avez selectionne a %d heures %d\n",heureActu.hr-ecartMiniMinutes/60,heureActu.mn-ecartMiniMinutes%60);
+
+                    }
                     break;
                 case 2 :
                     printf("Entrer le nom de l'arret\n");
@@ -50,34 +127,44 @@ int main()
                     i=0;
                     while(i<NB_LIGNES && lignes[i].nbLigne!=numLigne) i++; //On cherche la ligne dans le tableau des lignes
 
-                    if(i<NB_LIGNES-1){ //Si il y a plusieurs lignes avec le meme numero, on propose à l'utilisateur de choisir la bonne direction
-                        if(lignes[i+1].nbLigne==numLigne){
+                    if(i<NB_LIGNES-1)  //Si il y a plusieurs lignes avec le meme numero, on propose à l'utilisateur de choisir la bonne direction
+                    {
+                        if(lignes[i+1].nbLigne==numLigne)
+                        {
                             printf("Il y a plusieurs directions correspondant a la ligne que vous cherchez\n");
-                            do{
+                            do
+                            {
                                 printf("Veuillez entrer le numero de la ligne que vous cherchez\n");
                                 j=i;
-                                while(lignes[j].nbLigne==numLigne && j<NB_LIGNES){ //On parcourt les lignes
+                                while(lignes[j].nbLigne==numLigne && j<NB_LIGNES)  //On parcourt les lignes
+                                {
                                     printf("%d),%s\n",j-i,lignes[j].nomLigne); //On donne le nombre à entrer et on le fait partir de 0 avec j-i, puis 1,2,... tant qu'on a une ligne avec le bon numéro
                                     j++;
                                 }
                                 scanf("%d",&choixLigne);
-                            }while(choixLigne<0 && choixLigne>j-i-1);//Sécurité, j-i-1 car on inrémente j à la fin de la boucle
+                            }
+                            while(choixLigne<0 && choixLigne>j-i-1); //Sécurité, j-i-1 car on inrémente j à la fin de la boucle
                             lign=&lignes[choixLigne+i];//On récupère l'adresse de la bonne ligne pour chercher un arret dedans
                         }
                     }
-                    else if(i<NB_LIGNES){
+                    else if(i<NB_LIGNES)
+                    {
                         lign=&lignes[i];
                     }
-                    else{
+                    else
+                    {
                         printf("La ligne que vous cherchez n'est pas disponible\n");
                     }
 
                     arretTmp=getHorArret(nomArret,*lign); //On récupère l'arret si il existe
-                    if(arretTmp==0){
-                        printf("L'arret n'a pas pu etre trouve");
+                    if(arretTmp==0)
+                    {
+                        printf("L'arret n'a pas pu etre trouve\n");
                     }
-                    else{
-                        for(i=0;i<arretTmp->nbHr;i++){ //On écrit toutes les heures dans la console
+                    else
+                    {
+                        for(i=0; i<arretTmp->nbHr; i++) //On écrit toutes les heures dans la console
+                        {
                             printf("%d heure %d\n",arretTmp->heures[i].hr,arretTmp->heures[i].mn);
                         }
                     }
@@ -85,29 +172,80 @@ int main()
                 case 3 :
                     printf("Quel arret voulez vous rechercher ?\n");
                     gets(nomArret);
-                    for(j=0;j<NB_LIGNES;j++){
-                       strcpy(nomLigne,"Ligne");
-                        i=0;
-                        while(nomLigne[i]!='\0') i++; //On cherche la dernière lettre du nom de la ligne
-                        nomLigne[i]=(char)j; //On ajoute à la fin le numéro de ligne
-                        i++;
-                        nomLigne[i]='\0'; //On finit la chaine par un \0
-                        strcat(nomLigne,".csv");
-                        lireFichier(lign,nomLigne); //On lit le fichier et on l'écrit dans lign
-                        arretTmp=getHorArret(nomArret,*lign); //On récupère l'arret si il existe
-
-                        if(arretTmp==0){
-                            printf("L'arret n'a pas pu etre trouve");
-                        }
-                        else{
-                            for(i=0;i<arretTmp->nbHr;i++){ //On écrit toutes les heures dans la console
-                                printf("%d heure %d\n",arretTmp->heures[i].hr,arretTmp->heures[i].mn);
+                    //viderBuffer();
+                    reussi=0;
+                    for(i=0; i<NB_LIGNES; i++)
+                    {
+                        for(j=0; j<lignes[i].nbArrets-1; j++)
+                        {
+                            if(strcmp(nomArret,lignes[i].arrets[j].nom)==0)
+                            {
+                                reussi=1;
+                                printf("%s\n",lignes[i].nomLigne);
+                                for(k=0; k<lignes[i].arrets[j].nbHr; k++)
+                                {
+                                    printf("%d h %d\n",lignes[i].arrets[j].heures[k].hr,lignes[i].arrets[j].heures[k].mn);
+                                }
                             }
                         }
                     }
+                    if(reussi==0)
+                    {
+                        printf("L'arret demande n'a pas pu etre trouve\n");
+                    }
                     break;
                 case 4 :
+                    printf("Entrer le nom de l'arret\n");
+                    gets(nomArret);
+                    printf("Entrer le numero de la ligne\n");
+                    scanf("%d",&numLigne);
+                    viderBuffer();
 
+                    i=0;
+                    while(i<NB_LIGNES && lignes[i].nbLigne!=numLigne) i++; //On cherche la ligne dans le tableau des lignes
+
+                    if(i<NB_LIGNES-1)  //Si il y a plusieurs lignes avec le meme numero, on propose à l'utilisateur de choisir la bonne direction
+                    {
+                        if(lignes[i+1].nbLigne==numLigne)
+                        {
+                            printf("Il y a plusieurs directions correspondant a la ligne que vous cherchez\n");
+                            do
+                            {
+                                printf("Veuillez entrer le numero de la ligne que vous cherchez\n");
+                                j=i;
+                                while(lignes[j].nbLigne==numLigne && j<NB_LIGNES)  //On parcourt les lignes
+                                {
+                                    printf("%d),%s\n",j-i,lignes[j].nomLigne); //On donne le nombre à entrer et on le fait partir de 0 avec j-i, puis 1,2,... tant qu'on a une ligne avec le bon numéro
+                                    j++;
+                                }
+                                scanf("%d",&choixLigne);
+                                viderBuffer();
+                            }
+                            while(choixLigne<0 && choixLigne>j-i-1); //Sécurité, j-i-1 car on inrémente j à la fin de la boucle
+                            lign=&lignes[choixLigne+i];//On récupère l'adresse de la bonne ligne pour chercher un arret dedans
+                        }
+                    }
+                    else if(i<NB_LIGNES)
+                    {
+                        lign=&lignes[i];
+                    }
+                    else
+                    {
+                        printf("La ligne que vous cherchez n'est pas disponible\n");
+                    }
+
+                    arretTmp=getHorArret(nomArret,*lign); //On récupère l'arret si il existe
+                    if(arretTmp==0)
+                    {
+                        printf("L'arret n'a pas pu etre trouve");
+                    }
+                    else
+                    {
+                        printf("Quel est le nom du fichier dans lequel vous voulez ecrire les horaires ?\n");
+                        gets(nomLigne);
+                        //viderBuffer();
+                        ecrireArrFichier(*arretTmp,nomLigne);
+                    }
                     break;
                 }
             }
