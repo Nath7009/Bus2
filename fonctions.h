@@ -1,5 +1,6 @@
 #ifndef FONCTIONS_H_INCLUDED
 #define FONCTIONS_H_INCLUDED
+#define NB_LIGNES 10
     typedef struct
     {
         int mn;
@@ -21,6 +22,12 @@
         arret *arrets;
     } ligne;
 
+    /** \brief Fonction qui vide le buffer d'entrée pour éviter d'avoir de problèmes dans les fgets
+     *
+     * \return void
+     *
+     */
+    void viderBuffer();
     /** Permet de lire un fichier et de l'écrire dans une variable de type ligne
      *
      * \param line ligne* On retourne la ligne dans ce pointeur
@@ -41,10 +48,10 @@
     /** \brief Cette fonction permet de récuperer les horaires de passage d'une ligne sur un arrêt
      *
      * \param nomArret char* Le nom de l'arrêt que l'on recherche
-     * \param nomLigne char* Le nom du fichier qui contient la ligne
+     * \param lign ligne La ligne dans laquelle on cherche l'arrêt
      * \param arr arret* On renvoie l'arret que l'on recherche si on l'a trouvé dans cette adresse
      * \return void  On retourne déjà ce qu'on veut dans arr*,  donc pas besoin de retourner quoi que ce soit
      *
      */
-    void getHorArret(char* nomArret, char* nomLigne,arret* arr);
+    arret* getHorArret(char* nomArret, ligne lign);
     #endif // FONCTIONS_H_INCLUDED
