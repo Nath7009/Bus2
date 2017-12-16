@@ -1,6 +1,6 @@
 #ifndef FONCTIONS_H_INCLUDED
 #define FONCTIONS_H_INCLUDED
-#define NB_LIGNES 10
+#define NB_LIGNES 17
     typedef struct
     {
         int mn;
@@ -17,7 +17,7 @@
     typedef struct
     {
         int nbLigne;
-        char nomLigne[20];
+        char nomLigne[40];
         int nbArrets;
         arret *arrets;
     } ligne;
@@ -28,6 +28,7 @@
      *
      */
     void viderBuffer();
+
     /** Permet de lire un fichier et de l'écrire dans une variable de type ligne
      *
      * \param line ligne* On retourne la ligne dans ce pointeur
@@ -54,4 +55,11 @@
      *
      */
     arret* getHorArret(char* nomArret, ligne lign);
+
+    /** \brief  Permet de lire tous les fichiers de ligne présents dans le dossier et de les écrire dans un tableau
+     *
+     * \param lignes ligne* Le tableau dans lequel on stocke les lignes, doit être déjà alloué
+     *
+     */
+    void lireLignes(ligne* lignes);
     #endif // FONCTIONS_H_INCLUDED

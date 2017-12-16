@@ -18,9 +18,9 @@ void lireFichier(ligne *line, char* nomFichier) // On renvoie le pointeur vers l
     char c;
     int numArret=0,tmp,indHr=0;
     char nomArret[20];
-    int index=0;
+    int index=0,i;
     ligne temp;
-    temp.nbArrets=2;//Pas de \n pour le premier et le dernier arret, donc on a besoin de commencer à 2 au lieu de 0
+    temp.nbArrets=1;//Pas de \n pour le  dernier arret, donc on a besoin de commencer à 2 au lieu de 0
 
     fichier=fopen(nomFichier,"r");
     if(fichier!=NULL)
@@ -36,7 +36,17 @@ void lireFichier(ligne *line, char* nomFichier) // On renvoie le pointeur vers l
 
         rewind(fichier);
 
-        temp.arrets=(arret*)malloc(sizeof(arret)*temp.nbArrets);
+        temp.arrets=(arret*)malloc(sizeof(arret)*temp.nbArrets); //On alloue le bon nombre d'arrêts
+
+        while(feof(fichier)==0 && c!='\n')  //On lit la première ligne pour avoir le nom et la direction de la ligne
+        {
+            c=getc(fichier);
+            temp.nomLigne[index]=c; //On stocke le nom dans le tableau nomLigne
+            index++;
+        }
+        temp.nomLigne[index-1]='\0'; //On termine le tableau par un \0
+
+
 
         while(feof(fichier)==0)
         {
@@ -53,7 +63,9 @@ void lireFichier(ligne *line, char* nomFichier) // On renvoie le pointeur vers l
             // temp.arrets[numArret].nom=(char*)malloc(sizeof(char)*index);
             strcpy(temp.arrets[numArret].nom,nomArret);
             //temp.arrets[numArret].nom=nomArret; //On affecte le nombre d'arrets a la ligne
-
+            for(i=0;i<temp.nbArrets;i++){
+                temp.arrets[i].heures=(heure*)malloc(sizeof(heure));
+            }
 
             while((c<48 || c>57)  && feof(fichier)==0)  //Tant que ce qu'on lit n'est pas un nombre
             {
@@ -62,11 +74,12 @@ void lireFichier(ligne *line, char* nomFichier) // On renvoie le pointeur vers l
 
             fseek(fichier,-sizeof(char),SEEK_CUR);//On revient un caractère en arrière pour lire l'heure en entier
             temp.arrets[numArret].nbHr=1;
-            temp.arrets[numArret].heures=(heure*)malloc(sizeof(heure));
 
+            indHr=0;
             while(c!='\n' && feof(fichier)==0)
             {
-                while((c=getc(fichier))!=',' && c!='|')  //Tant qu'on reste sur la meme heure
+
+                while((c=getc(fichier))!=',' && c!='|'  && feof(fichier)==0)  //Tant qu'on reste sur la meme heure
                 {
                     fseek(fichier,-sizeof(char),SEEK_CUR);
                     fscanf(fichier,"%d",&tmp);
@@ -138,4 +151,68 @@ arret* getHorArret(char* nomArret, ligne lign)
         arr=0;
     }
     return arr;
+}
+
+void lireLignes(ligne* lignes)
+{
+    char nomLigne[13]; //12 caracteres permettent de stocker Ligne + numero de ligne + direction (a ou b) + .csv
+    int numLigne=1,indLigne=0, fichierExiste=1, indNom=5;
+    //numLigne pour stocker le numéro de la ligne, indLigne pour stocker l'indice du tableau lignes , fichierExiste pour tester si le fichier existe (1 s'il existe, 0 sinon)
+    char direction='a';
+    FILE *fichier;
+
+    while(numLigne<100 && indLigne<=NB_LIGNES)  //Tant qu'on a pas atteint le maximum de numero de livres(99) et qu'on a pas atteint la fin du tableau
+    {
+        direction='a';
+        while(direction<='z'  && indLigne<=NB_LIGNES && fichierExiste) //On percourt toutes les lettres tant qu'on a un fichier qui existe
+        {
+            strcpy(nomLigne,"Ligne");
+            indNom=5;//On déplace l'indice sur le nom juste après Ligne
+            if(numLigne<10)  //Si le numéro de la ligne est inférieur à 10
+            {
+                nomLigne[indNom]=numLigne+48;
+                indNom++;
+            }
+            else
+            {
+                nomLigne[indNom]=(numLigne/10)+48;//On prend le numéro des dizaines
+                indNom++;
+                nomLigne[indNom]=(numLigne%10)+48;//On met le numéro des unités après
+                indNom++;
+            }
+            nomLigne[indNom]=direction;
+            indNom++;
+            nomLigne[indNom]='\0';
+            strcat(nomLigne,".csv");// On met .csv à la fin du nom du fichier
+            fichier=fopen(nomLigne,"r");
+            if(fichier!=NULL)
+            {
+                fclose(fichier);
+                lireFichier(&lignes[indLigne],nomLigne);
+                fichierExiste=1;
+                lignes[indLigne].nbLigne=numLigne;
+                indLigne++;
+
+            }
+            else
+            {
+                fichierExiste=0;
+            }
+            direction++;
+        }
+        fichierExiste=1;
+        numLigne++;
+    }
+}
+
+void affLigne(ligne line){
+    int i,j;
+    for(i=0;i<line.nbArrets;i++){
+        printf("Nom de l'arret : %s\n",line.arrets[i].nom);
+        for(j=0;j<line.arrets[i].nbHr;j++){
+            printf("%d h %d\n",line.arrets[i].heures[j].hr,line.arrets[i].heures[j].mn);
+        }
+    }
+
+
 }
