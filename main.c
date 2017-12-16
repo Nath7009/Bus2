@@ -18,9 +18,8 @@ int main()
     nomArret=(char*)malloc(sizeof(char)*20);
     lign=(ligne*)malloc(sizeof(ligne));
     lireLignes(lignes);
-    lireFichier(lign,"Ligne1.csv");
     log=login(MDP); //1=utilisateur standard, 2=administrateur
-    for(i=0;i<NB_LIGNES;i++){affLigne(lignes[i]);}
+
     if(log==1)
     {
         printf("Vous pouvez acceder au programme en tant que simple utilisateur\n");
