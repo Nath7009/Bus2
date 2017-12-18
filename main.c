@@ -552,16 +552,14 @@ int main()
                            || lign->arrets[lign->nbArrets-1].heures[i].hr-lign->arrets[lign->nbArrets-1].heures[i].hr<0){ //Si on écrit une horaire à une heure inférieure à l'heure d'avant
                             printf("L'heure que vous avez saisi n'est pas valide\n");
                         }
-                        }while((lign->arrets[lign->nbArrets-1].heures[i].mn < 0  //On teste si l'heure est valide
+                        }while(lign->arrets[lign->nbArrets-1].heures[i].mn < 0  //On teste si l'heure est valide
                                || lign->arrets[lign->nbArrets-1].heures[i].mn > 60
                                ||lign->arrets[lign->nbArrets-1].heures[i].hr < 0
-                               ||lign->arrets[lign->nbArrets-1].heures[i].hr > 24)  //Si l'heure n'est pas correcte ou si les heures sont trop proches
-                               ||(i>0
-                                &&(lign->arrets[lign->nbArrets-1].heures[i].mn-lign->arrets[lign->nbArrets-1].heures[i-1].mn<1 //Si on écrit une horaire à moins de 1 minute d'intervalle
-                                || lign->arrets[lign->nbArrets-1].heures[i].hr-lign->arrets[lign->nbArrets-1].heures[i-1].hr<0
-                                || lign->arrets[lign->nbArrets-1].heures[i].hr>lign->arrets[lign->nbArrets-1].heures[i-1].hr
-                                && lign->arrets[lign->nbArrets-1].heures[i].mn<lign->arrets[lign->nbArrets-1].heures[i-1].mn
-                                )));
+                               ||lign->arrets[lign->nbArrets-1].heures[i].hr > 24  //Si l'heure n'est pas correcte ou si les heures sont trop proches
+                               ||i>0 && lign->arrets[lign->nbArrets-1].heures[i].hr<lign->arrets[lign->nbArrets-1].heures[i-1].hr
+                               || i>0 && (lign->arrets[lign->nbArrets-1].heures[i].mn-lign->arrets[lign->nbArrets-1].heures[i-1].mn<1 //Si on écrit une horaire à moins de 1 minute d'intervalle
+                                || lign->arrets[lign->nbArrets-1].heures[i].hr-lign->arrets[lign->nbArrets-1].heures[i].hr<0))
+                                );
                     }
                     break;
                 case 6:

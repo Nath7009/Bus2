@@ -4,43 +4,17 @@
 	<ActiveTarget name="Debug" />
 	<File name="fonctions.c" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="6746" topLine="199" />
+			<Cursor1 position="5734" topLine="169" />
 		</Cursor>
 	</File>
 	<File name="fonctions.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2430" topLine="59" />
+			<Cursor1 position="2148" topLine="61" />
 		</Cursor>
 	</File>
 	<File name="main.c" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="24332" topLine="358" />
+			<Cursor1 position="29239" topLine="544" />
 		</Cursor>
-		<Folding>
-			<Collapse line="294" />
-			<Collapse line="296" />
-			<Collapse line="299" />
-			<Collapse line="303" />
-			<Collapse line="314" />
-			<Collapse line="318" />
-			<Collapse line="324" />
-			<Collapse line="328" />
-			<Collapse line="348" />
-			<Collapse line="358" />
-			<Collapse line="377" />
-			<Collapse line="397" />
-			<Collapse line="401" />
-			<Collapse line="407" />
-			<Collapse line="411" />
-			<Collapse line="424" />
-			<Collapse line="439" />
-			<Collapse line="454" />
-			<Collapse line="459" />
-			<Collapse line="463" />
-			<Collapse line="475" />
-			<Collapse line="479" />
-			<Collapse line="485" />
-			<Collapse line="492" />
-		</Folding>
 	</File>
 </CodeBlocks_layout_file>
