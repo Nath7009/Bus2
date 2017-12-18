@@ -555,7 +555,45 @@ int main()
                 case 10:
                     break;
                 case 11:
+                    printf("Entrer le numero de la ligne\n");
+                    scanf("%d",&numLigne);
+                    viderBuffer();
+
+                    i=0;
+                    while(i<NB_LIGNES && lignes[i].nbLigne!=numLigne) i++; //On cherche la ligne dans le tableau des lignes
+
+                    if(i<NB_LIGNES-1)
+                    {
+                        if(lignes[i+1].nbLigne==numLigne)  //Si il y a plusieurs lignes avec le meme numero, on propose à l'utilisateur de choisir la bonne direction
+                        {
+                            printf("Il y a plusieurs directions correspondant a la ligne que vous cherchez\n");
+                            do
+                            {
+                                printf("Veuillez entrer le numero de la ligne que vous cherchez\n");
+                                j=i;
+                                while(lignes[j].nbLigne==numLigne && j<NB_LIGNES)  //On parcourt les lignes
+                                {
+                                    printf("%d),%s\n",j-i,lignes[j].nomLigne); //On donne le nombre à entrer et on le fait partir de 0 avec j-i, puis 1,2,... tant qu'on a une ligne avec le bon numéro
+                                    j++;
+                                }
+                                scanf("%d",&choixLigne);
+                                viderBuffer();
+                            }
+                            while(choixLigne<0 && choixLigne>j-i-1); //Sécurité, j-i-1 car on incrémente j à la fin de la boucle
+                            lign=&lignes[choixLigne+i];//On récupère l'adresse de la bonne ligne pour chercher un arret dedans
+                        }
+                    }
+                    else if(i<NB_LIGNES)
+                    {
+                        lign=&lignes[i];
+                    }
+                    else
+                    {
+                        printf("La ligne que vous cherchez n'est pas disponible\n");
+                    }
+                    affLigne(*lign);
                     break;
+
                 }
             }
         }

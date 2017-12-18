@@ -201,13 +201,14 @@ void lireLignes(ligne* lignes)
 void affLigne(ligne line)
 {
     int i,j;
-    for(i=0; i<line.nbArrets-1; i++)
+    for(i=0; i<line.nbArrets-1; i++)        //On parcourt chaque arrets dans cette boucle
     {
         printf("Nom de l'arret : %s\n",line.arrets[i].nom);
-        for(j=0; j<line.arrets[i].nbHr; j++)
+        for(j=0; j<line.arrets[i].nbHr; j++)        //On parcourt chaque horraires de chaque arrêts
         {
-            printf("%d h %d\n",line.arrets[i].heures[j].hr,line.arrets[i].heures[j].mn);
+            printf("%d h %d---",line.arrets[i].heures[j].hr,line.arrets[i].heures[j].mn); //on affiche chaque horaire de chaque arrêts
         }
+        printf("\n");
     }
 }
 

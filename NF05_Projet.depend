@@ -15,3 +15,17 @@
 
 1513584491 c:\users\nathan\documents\github\bus\fonctions.h
 
+1513590279 source:c:\users\dereu\documents\github\bus2\fonctions.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"fonctions.h"
+
+1513586350 c:\users\dereu\documents\github\bus2\fonctions.h
+
+1513591781 source:c:\users\dereu\documents\github\bus2\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"fonctions.h"
+
