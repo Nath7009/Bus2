@@ -1,6 +1,8 @@
 #ifndef FONCTIONS_H_INCLUDED
 #define FONCTIONS_H_INCLUDED
-#define NB_LIGNES 17
+
+extern int NB_LIGNES;
+
     typedef struct
     {
         int mn;
