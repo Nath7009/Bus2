@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1513588686 source:c:\users\nathan\documents\github\bus\main.c
+1513954648 source:c:\users\nathan\documents\github\bus\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -7,7 +7,7 @@
 
 1512376219 source:c:\users\nathan\documents\github\bus\fonctions.h
 
-1513464522 source:c:\users\nathan\documents\github\bus\fonctions.c
+1513592450 source:c:\users\nathan\documents\github\bus\fonctions.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
