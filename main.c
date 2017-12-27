@@ -78,6 +78,7 @@ int main()
                     else
                     {
                         printf("La ligne que vous cherchez n'est pas disponible\n");
+                        break;
                     }
 
                     arretTmp=getHorArret(nomArret,*lign); //On récupère l'arret si il existe
@@ -158,6 +159,7 @@ int main()
                     else
                     {
                         printf("La ligne que vous cherchez n'est pas disponible\n");
+                        break;
                     }
 
                     arretTmp=getHorArret(nomArret,*lign); //On récupère l'arret si il existe
@@ -236,6 +238,7 @@ int main()
                     else
                     {
                         printf("La ligne que vous cherchez n'est pas disponible\n");
+                        break;
                     }
 
                     arretTmp=getHorArret(nomArret,*lign); //On récupère l'arret si il existe
@@ -258,7 +261,7 @@ int main()
     }
     else
     {
-        printf("Vous pouvez acceder au programme en tant qu'admin\n");
+        printf("Vous pouvez acceder au programme en tant qu'administrateur\n");
         do
         {
             printf("Que voulez vous faire ?\n");
@@ -398,6 +401,7 @@ int main()
                     else
                     {
                         printf("La ligne que vous cherchez n'est pas disponible\n");
+                        break;
                     }
 
                     arretTmp=getHorArret(nomArret,*lign); //On récupère l'arret si il existe
@@ -476,6 +480,7 @@ int main()
                     else
                     {
                         printf("La ligne que vous cherchez n'est pas disponible\n");
+                        break;
                     }
 
                     arretTmp=getHorArret(nomArret,*lign); //On récupère l'arret si il existe
@@ -607,6 +612,7 @@ int main()
                     else
                     {
                         printf("La ligne que vous cherchez n'est pas disponible\n");
+                        break;
                     }
 
                     arretTmp=getHorArret(nomArret,*lign); //On récupère l'arret si il existe
@@ -660,6 +666,7 @@ int main()
                     else
                     {
                         printf("La ligne que vous cherchez n'est pas disponible\n");
+                        break;
                     }
 
                     arretTmp=getHorArret(nomArret,*lign); //On récupère l'arret si il existe
@@ -751,8 +758,104 @@ int main()
                     }
                     break;
                 case 9:
+                    printf("Entrer le numero de la ligne\n");
+                    scanf("%d",&numLigne);
+                    viderBuffer();
+
+                    i=0;
+                    while(i<NB_LIGNES && lignes[i].nbLigne!=numLigne) i++; //On cherche la ligne dans le tableau des lignes
+
+                    if(i<NB_LIGNES-1)
+                    {
+                        if(lignes[i+1].nbLigne==numLigne)  //Si il y a plusieurs lignes avec le meme numero, on propose à l'utilisateur de choisir la bonne direction
+                        {
+                            printf("Il y a plusieurs directions correspondant a la ligne que vous cherchez\n");
+                            do
+                            {
+                                printf("Veuillez entrer le numero de la ligne que vous cherchez\n");
+                                j=i;
+                                while(lignes[j].nbLigne==numLigne && j<NB_LIGNES)  //On parcourt les lignes
+                                {
+                                    printf("%d),%s\n",j-i,lignes[j].nomLigne); //On donne le nombre à entrer et on le fait partir de 0 avec j-i, puis 1,2,... tant qu'on a une ligne avec le bon numéro
+                                    j++;
+                                }
+                                scanf("%d",&choixLigne);
+                                viderBuffer();
+                            }
+                            while(choixLigne<0 && choixLigne>j-i-1); //Sécurité, j-i-1 car on incrémente j à la fin de la boucle
+                            lign=&lignes[choixLigne+i];//On récupère l'adresse de la bonne ligne pour chercher un arret dedans
+                        }
+                    }
+                    else if(i<NB_LIGNES)
+                    {
+                        lign=&lignes[i];
+                    }
+                    else
+                    {
+                        printf("La ligne que vous cherchez n'est pas disponible\n");
+                        break;
+                    }
+                    printf("Donnez le nouveau nom de la ligne\n");
+                    gets(nomLigne);
+                    strcpy(lign->nomLigne,nomLigne);
                     break;
                 case 10:
+
+                    printf("Entrer le numero de la ligne\n");
+                    scanf("%d",&numLigne);
+                    viderBuffer();
+
+                    i=0;
+
+                    while(i<NB_LIGNES && lignes[i].nbLigne!=numLigne) i++; //On cherche la ligne dans le tableau des lignes
+
+                    if(i<NB_LIGNES-1)  //Si on a touvé la ligne
+                    {
+                        if(lignes[i+1].nbLigne==numLigne) //Si il y a plusieurs lignes avec le meme numero, on propose à l'utilisateur de choisir la bonne direction
+                        {
+                            printf("Il y a plusieurs directions correspondant a la ligne que vous cherchez\n");
+                            do
+                            {
+                                printf("Veuillez entrer le numero de la ligne que vous cherchez\n");
+                                j=i;
+                                while(lignes[j].nbLigne==numLigne && j<NB_LIGNES)  //On parcourt les lignes
+                                {
+                                    printf("%d),%s\n",j-i,lignes[j].nomLigne); //On donne le nombre à entrer et on le fait partir de 0 avec j-i, puis 1,2,... tant qu'on a une ligne avec le bon numéro
+                                    j++;
+                                }
+                                scanf("%d",&choixLigne);
+                                viderBuffer();
+                            }
+                            while(choixLigne<0 && choixLigne>j-i-1); //Sécurité, j-i-1 car on inrémente j à la fin de la boucle
+                            lign=&lignes[choixLigne+i];//On récupère l'adresse de la bonne ligne pour la supprimer
+                        }
+                    }
+                    else if(i<NB_LIGNES) //Si il y a une seule ligne avec ce nom
+                    {
+                        lign=&lignes[i];
+                    }
+                    else
+                    {
+                        printf("La ligne que vous cherchez n'est pas disponible\n");
+                        break;
+                    }
+
+                    i=0;
+                    while(strcmp(lign->nomLigne,lignes[i].nomLigne)!=0 && i<NB_LIGNES) i++; //On cherche l'indice de la ligne dans lignes
+                    if(i<NB_LIGNES)
+                    {
+                        for(j=i; j<NB_LIGNES; j++) //On parcourt toutes les lignes pour les supprimer
+                        {
+                            lignes[j]=lignes[j+1]; //On remplace chaque ligne par la suivante
+                        }
+                        NB_LIGNES--; //On diminue le nombre d'arrets
+                        lignes=(ligne*)realloc(lignes,NB_LIGNES*sizeof(ligne));//On realloue le tableau pour qu'il soit plus petit
+                    }
+                    else
+                    {
+                        printf("Une erreur est survenue\n");
+                    }
+
                     break;
                 case 11:
                     printf("Entrer le numero de la ligne\n");
@@ -794,7 +897,6 @@ int main()
                     }
                     affLigne(*lign);
                     break;
-
                 }
             }
         }
